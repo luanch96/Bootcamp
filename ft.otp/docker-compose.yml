@@ -1,0 +1,14 @@
+services:
+  flask-otp:
+    build: .
+    image: "otp-web"
+    ports:
+      - "5000:5000"
+      - "2992:2992"
+      - "5678:5678"
+    environment:
+      - FLASK_APP=app:create_app
+      - FLASK_DEBUG=true
+    entrypoint: ["python", "-m", "flask", "run", "--host=0.0.0.0", "-p", "5000"] # 
+    volumes:
+      - ./:/app

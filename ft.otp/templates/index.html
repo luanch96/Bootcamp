@@ -1,0 +1,93 @@
+{% extends "layout.html" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+  {{ super() }}
+  <style type="text/css">
+    
+    .modal-sheet .modal-dialog {
+      width: 380px;
+      transition: bottom .75s ease-in-out;
+    }
+    .modal-sheet .modal-footer {
+      padding-bottom: 2rem;
+    }
+
+    .progress{
+      border-bottom-left-radius: var(--bs-border-radius-xl)!important;
+      border-bottom-right-radius: var(--bs-border-radius-xl)!important;
+      border-top-left-radius: 0px !important;
+      border-top-right-radius: 0px !important;
+    }
+  </style>
+{% endblock %}
+{% block content %}
+<div class="toast-container position-absolute top-0 end-0 p-3">
+  <div role="alert" aria-live="assertive" aria-atomic="true" class="toast" id="info-toast" data-bs-autohide="true">
+    <div class="toast-header">
+      <img src="{{ url_for('static', filename='Favicon-42.png') }}" class="rounded me-2" alt="...">
+      <strong class="me-auto">Master Key Checker</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body" id="toast-body-content">
+      
+    </div>
+  </div>
+</div>
+<div class="modal modal-sheet position-static d-block bg-body-secondary p-4 py-md-5" tabindex="-1" role="dialog" id="modalTour">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content rounded-4 shadow">
+      <div class="modal-body p-5">
+        <h2 class="fw-bold mb-0">🔒 TOTP key</h2>
+
+        <ul class="d-grid gap-4 my-5 list-unstyled small">
+          <li class="d-flex gap-4">
+            <div class="input-group mb-3">
+              <input type="text" id="master-password" value="{{ master_key }}" class="form-control" placeholder="Password" aria-label="Username" aria-describedby="basic-addon1">
+            </div>
+          </li>
+          <li class="d-flex gap-4">
+            <button type="button" onclick="updateMasterKey()" class="btn btn-lg btn-warning w-100" data-bs-dismiss="modal">Update password</button>
+          </li>
+
+          <li class="d-flex gap-4 mt-5 " style="align-items: center;">
+            <i class="fas fa-5x" id="happy-face" style="color:rgb(224, 165, 3)">😄 </i> 
+            <div>
+              <h1 class="mb-0" id="totp-key">{{ key }}</h1>
+            </div>
+          </li>
+        </ul>
+        <button type="button" onclick="fetchKey()" class="btn btn-lg btn-primary w-100" data-bs-dismiss="modal">Reload</button>
+      </div>
+      <div class="progress">
+        <div class="progress-bar" role="progressbar" style="width: {{ percentage_to_next }}%" aria-valuenow="{{ percentage_to_next }}" aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal modal-sheet position-static d-block bg-body-secondary p-4 py-md-5" tabindex="-1" role="dialog" id="modalTour">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content rounded-4 shadow">
+      <div class="modal-body p-5">
+        <h2 class="fw-bold mb-0">🔑 Master key generator</h2>
+
+        <ul class="d-grid gap-4 my-5 list-unstyled small">
+          <li class="d-flex gap-4">
+            <div class="input-group mb-3">
+              <input type="text" id="new-master-key"  class="form-control" placeholder="Random Master Key" aria-label="Username" aria-describedby="basic-addon1">
+            </div>
+          </li>
+          <li class="d-flex gap-4">
+            <button type="button" onclick="generateMasterKey()" class="btn btn-lg btn-primary w-100" data-bs-dismiss="modal">Generate Master Key</button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  var toastList;
+  var percentage = {{ percentage_to_next }};
+  var bar = document.querySelector(".progress-bar");
+</script>
+<script src="{{ url_for('static', filename='scripts.js') }}"/>
+{% endblock %}
