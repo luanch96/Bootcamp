@@ -1,0 +1,9 @@
+services:
+  onion-nginx:
+    build: .
+    image: "onion-nginx"
+    ports:
+      - "80:80"
+      - "4242:4242"
+    volumes:
+      - ./hidden:/usr/share/nginx/html/

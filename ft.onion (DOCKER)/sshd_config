@@ -1,0 +1,46 @@
+# Port 22
+Port 4242     # Cambia el puerto por uno personalizado
+
+# Protocol 2
+Protocol 2
+
+# HostKeys for protocol version 2
+HostKey /etc/ssh/ssh_host_ed25519_key
+HostKey /etc/ssh/ssh_host_rsa_key
+
+# Key exchange algorithms
+KexAlgorithms curve25519-sha256@libssh.org
+Ciphers chacha20-poly1305@openssh.com
+MACs hmac-sha2-512-etm@openssh.com
+
+# Authentication
+LoginGraceTime 1m
+PermitRootLogin no
+PubkeyAuthentication yes
+AuthorizedKeysFile .ssh/authorized_keys
+
+# Disable password authentication
+PasswordAuthentication no
+ChallengeResponseAuthentication no
+
+# Disable X11Forwarding
+X11Forwarding no
+
+# Disable SSH tunnelling
+AllowTcpForwarding no
+
+# Maximum login attempts
+MaxAuthTries 3
+
+# Enable client alive messages
+ClientAliveInterval 300
+ClientAliveCountMax 2
+
+# Disable host-based authentication
+HostbasedAuthentication no
+
+# Allow only specific users to login
+AllowUsers user
+
+# Set permissions for the SSH directory and authorized keys
+StrictModes yes
